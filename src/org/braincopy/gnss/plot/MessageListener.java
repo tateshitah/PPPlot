@@ -1,15 +1,5 @@
-PPPlot
-======
-A graph plotting tool getting Latitude and Longitude 
-via TCP/IP connection with NMEA format, 
-especially for precise positioning like PPP (Precise Point Positioning)
-
-This application will be available from google play.
-
-
-License
-------
-
+/*
+ 
 Copyright (c) 2013 braincopy.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
@@ -30,11 +20,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
 IN THE SOFTWARE.
 
-Build
-------
+ */
+package org.braincopy.gnss.plot;
 
-Android Developer Tools
-Build: v21.1.0-569685
-
-In this moment, just NEXUS 7 was tested.
-
+/**
+ * 
+ * @author Hiroaki Tateshita
+ * @version 0.4
+ */
+public interface MessageListener {
+	/**
+	 * 
+	 * @param message NMEA
+	 */
+	void sendMessage(String message);
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PPPlot</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_connect_name">Connect</string>
+    <string name="menu_connectionSetting_name">Connection Setting...</string>
+    <string name="dialog_connectionSetting_message">Connection Setting</string>
+    <string name="menu_disconnect_name">Disconnect</string>
+    <string name="dialog_ip_setting_hint">TCP Server IP address or host name</string>
+    <string name="dialog_port_name">Port Number (eg. 10000)</string>
+    <string name="button_test_name">This is test</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_exit_name">Exit</string>
+    <string name="textView_status_string">Status Window #</string>
+    <string name="menu_clear_name">Clear</string>
+    <string name="menu_fix_track_center_name">Fix Track Center</string>
+
+</resources>
