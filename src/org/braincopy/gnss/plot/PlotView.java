@@ -26,11 +26,8 @@ package org.braincopy.gnss.plot;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -40,6 +37,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
+ * PlotView is custom SurfaceView for plotting animation.
  * 
  * @author Hiroaki Tateshita
  * @version 0.51
@@ -49,7 +47,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * background.
 	 */
-	private Bitmap background;
+	// private Bitmap background;
 
 	/**
 	 * image for points.
@@ -74,7 +72,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * matrix for the size adjust.
 	 */
-	private Matrix matrix;
+	// private Matrix matrix;
 
 	/**
 	 * center of plot area.
@@ -92,9 +90,14 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	private PointArray pointArray;
 
 	/**
-	 * this value shows a unit length for a dp. initially 100 dp is 1 m
+	 * initial unitDP value. it means 100dp means 1m.
 	 */
-	private double unitDP = 100;
+	private final double initialUnitDP = 100.0;
+
+	/**
+	 * this value shows a unit length for a dp.
+	 */
+	private double unitDP = initialUnitDP;
 
 	/**
 	 * radius of earth. [m]
@@ -153,69 +156,41 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	/**
-	 * 
-	 * @param lat
-	 *            latitude
-	 * @param lon
-	 *            longitude
-	 * @param scale
-	 *            scale index
+	 * this method is to draw background of plot area by uploading background
+	 * image and try to fit to the view.
 	 */
-	public final void drawPlotArea(final double lat, final double lon,
-			final double scale) {
+	public final void drawPlotArea() {
 		Canvas canvas = null;
 		SurfaceHolder holder = getHolder();
 		try {
 			canvas = holder.lockCanvas();
 			synchronized (holder) {
-				// zoom rate of display
-				float fImageScale;
 
-				// margin
-				float fMarginX = 0.0f;
-				float fMarginY = 0.0f;
+				xCenter = getWidth() / 2;
+				yCenter = getHeight() / 2;
 
-				// get zoom rate
-
-				int nImageWidth = background.getWidth();
-				int nImageHeight = background.getHeight();
-				int nViewWidth = getWidth();
-				int nViewHeight = getHeight();
-
-				// fit image
-				if ((long) nImageWidth * nViewHeight > (long) nViewWidth
-						* nImageHeight) {
-					fImageScale = (float) nViewWidth / nImageWidth;
-					fMarginY = (nViewHeight - fImageScale * nImageHeight) / 2;
-				} else {
-					fImageScale = (float) nViewHeight / nImageHeight;
-					fMarginX = (nViewWidth - fImageScale * nImageWidth) / 2;
-				}
-				xCenter = nViewWidth / 2;
-				yCenter = nViewHeight / 2;
-
-				// zoom
-				float fScale = fImageScale;
-
-				// move margin
-				float fMoveX = fMarginX;
-				float fMoveY = fMarginY;
-				if (matrix == null) {
-					matrix = new Matrix();
-				}
-				// zoom
-				matrix.preScale(fScale, fScale);
-
-				// move
-				matrix.postTranslate(fMoveX, fMoveY);
-				canvas.drawBitmap(background, matrix, null);
-
+				fillWhite(canvas);
 			}
 		} finally {
 			if (canvas != null) {
 				holder.unlockCanvasAndPost(canvas);
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param canvas
+	 *            canvas
+	 */
+	private void fillWhite(final Canvas canvas) {
+		int nViewWidth = getWidth();
+		int nViewHeight = getHeight();
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawRect(new Rect(0, 0, nViewWidth, nViewHeight), paint);
+
 	}
 
 	/**
@@ -227,7 +202,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			canvas = holder.lockCanvas();
 			synchronized (holder) {
-				canvas.drawBitmap(background, matrix, null);
+				fillWhite(canvas);
 
 				// for test
 				/*
@@ -235,21 +210,24 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 				 * i, y_center - 2 * i); }
 				 */
 
+				Paint paint = new Paint();
+				paint.setColor(Color.BLUE);
+
 				// draw points
 				for (int i = 0; i < pointArray.getSize(); i++) {
-					imageRect.set((int) (pointArray.getX(i) - image
-							.getIntrinsicWidth() / 2), (int) (pointArray
-							.getY(i) - image.getIntrinsicWidth() / 2),
-							(int) (pointArray.getX(i) + image
-									.getIntrinsicWidth() / 2),
-							(int) (pointArray.getY(i) + image
-									.getIntrinsicHeight() / 2));
-					image.setBounds(imageRect);
-					image.draw(canvas);
+					/*
+					 * imageRect.set((int) (pointArray.getX(i) - image
+					 * .getIntrinsicWidth() / 2), (int) (pointArray .getY(i) -
+					 * image.getIntrinsicWidth() / 2), (int) (pointArray.getX(i)
+					 * + image .getIntrinsicWidth() / 2), (int)
+					 * (pointArray.getY(i) + image .getIntrinsicHeight() / 2));
+					 * image.setBounds(imageRect); image.draw(canvas);
+					 * 					 */
+					canvas.drawCircle((float) pointArray.getX(i),
+							(float) pointArray.getY(i), 2.0f, paint);
 				}
 
 				// draw unit bar
-				Paint paint = new Paint();
 				paint.setColor(Color.BLACK);
 				// culDP: currentUnitLengthDP
 				double culDP = unitDP * unitLength[currentUnitLengthIndex];
@@ -274,8 +252,8 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	/**
-	 * return string of appropriate length. private double unit_length[]
-	 * ={0.001, 0.002, 0.005, 0.01,0.02,0.05 ,0.1,0.2,0.5,1,2,5,10,20,50,100};
+	 * return string of appropriate length. ={0.001, 0.002, 0.005,
+	 * 0.01,0.02,0.05 ,0.1,0.2,0.5,1,2,5,10,20,50,100};
 	 * 
 	 * @return string of appropriate length
 	 */
@@ -346,13 +324,14 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	/**
-	 * 
+	 * @deprecated this method might be not useless. Please consider to delete
+	 *             it.
 	 * @param context
 	 *            context
 	 */
 	public final void loadImages(final Context context) {
 		Resources r = context.getResources();
-		background = BitmapFactory.decodeResource(r, R.drawable.background);
+		// background = BitmapFactory.decodeResource(r, R.drawable.background);
 		image = r.getDrawable(R.drawable.item);
 		imageRect = new Rect(0, 0, image.getIntrinsicWidth(),
 				image.getIntrinsicHeight());
@@ -421,8 +400,8 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public final void surfaceCreated(final SurfaceHolder arg0) {
-		matrix = new Matrix();
-		drawPlotArea(-1, -1, -1);
+		// matrix = new Matrix();
+		drawPlotArea();
 		final int maxPointNumber = 1000;
 		pointArray = new PointArray(maxPointNumber);
 		// for test

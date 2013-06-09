@@ -48,10 +48,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
- * Main Activity class of this android application qzplot.
+ * Main Activity class of this android application PPPlot.
  * 
  * @author Hiroaki Tateshita
- * @version 0.5
+ * @version 0.51
  * 
  */
 public class MainActivity extends Activity {
@@ -306,8 +306,8 @@ public class MainActivity extends Activity {
 			throws IOException, InterruptedException {
 		statusTextView.append("connecting... -> ip: " + hostname + ", port: "
 				+ portNumber + "\n");
-		ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		final Handler handler = new Handler();
 		if (networkInfo != null && networkInfo.isConnected()) {
 
