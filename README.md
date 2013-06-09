@@ -4,8 +4,8 @@ A graph plotting tool getting Latitude and Longitude
 via TCP/IP connection with NMEA format, 
 especially for precise positioning like PPP (Precise Point Positioning)
 
-This application will be available from google play.
-
+This application is available from google play.
+[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=org.braincopy.gnss.plot)
 
 License
 ------
