@@ -25,12 +25,10 @@ IN THE SOFTWARE.
 package org.braincopy.gnss.plot;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -40,7 +38,7 @@ import android.view.SurfaceView;
  * PlotView is custom SurfaceView for plotting animation.
  * 
  * @author Hiroaki Tateshita
- * @version 0.51
+ * @version 0.52
  * 
  */
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
@@ -52,12 +50,12 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * image for points.
 	 */
-	private Drawable image;
+	//private Drawable image;
 
 	/**
 	 * image rectangle for points.
 	 */
-	private Rect imageRect;
+	//private Rect imageRect;
 
 	/**
 	 * latitude of center [degree].
@@ -328,15 +326,15 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 *             it.
 	 * @param context
 	 *            context
-	 */
+	 
 	public final void loadImages(final Context context) {
-		Resources r = context.getResources();
+		//Resources r = context.getResources();
 		// background = BitmapFactory.decodeResource(r, R.drawable.background);
-		image = r.getDrawable(R.drawable.item);
-		imageRect = new Rect(0, 0, image.getIntrinsicWidth(),
-				image.getIntrinsicHeight());
+//		image = r.getDrawable(R.drawable.item);
+	//	imageRect = new Rect(0, 0, image.getIntrinsicWidth(),
+		//		image.getIntrinsicHeight());
 
-	}
+	}*/
 
 	/**
 	 * This method is to get Lat and Lon info from NMEA sentence and set in the

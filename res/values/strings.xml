@@ -16,5 +16,7 @@
     <string name="textView_status_string">Status Window #</string>
     <string name="menu_clear_name">Clear</string>
     <string name="menu_fix_track_center_name">Fix Track Center</string>
+    <string name="menu_zoom_up_name">+</string>
+    <string name="menu_zoom_down_name">-</string>
 
 </resources>

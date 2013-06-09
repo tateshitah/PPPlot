@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		plotview = (PlotView) findViewById(R.id.plotView1);
-		plotview.loadImages(MainActivity.this);
+		//plotview.loadImages(MainActivity.this);
 		// Resources r = context.getResources();
 		// Bitmap background = BitmapFactory.decodeResource(r,
 		// R.drawable.background);
@@ -274,6 +274,14 @@ public class MainActivity extends Activity {
 				item.setChecked(true);
 				this.plotview.setFixTrackCenter(true);
 			}
+			return true;
+		case R.id.menu_zoom_up_item:
+			plotview.setZoom(2.0);
+			plotview.plot();
+			return true;
+		case R.id.menu_zoom_down_item:
+			plotview.setZoom(0.5);
+			plotview.plot();
 			return true;
 		case R.id.menu_exit_item:
 			if (tcpClientThread != null && tcpClientThread.isRunning()) {
