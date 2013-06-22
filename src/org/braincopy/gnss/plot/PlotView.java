@@ -50,12 +50,12 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * image for points.
 	 */
-	//private Drawable image;
+	// private Drawable image;
 
 	/**
 	 * image rectangle for points.
 	 */
-	//private Rect imageRect;
+	// private Rect imageRect;
 
 	/**
 	 * latitude of center [degree].
@@ -188,7 +188,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setColor(Color.WHITE);
 		paint.setStyle(Paint.Style.FILL);
 		canvas.drawRect(new Rect(0, 0, nViewWidth, nViewHeight), paint);
-
 	}
 
 	/**
@@ -199,48 +198,51 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		SurfaceHolder holder = getHolder();
 		try {
 			canvas = holder.lockCanvas();
-			synchronized (holder) {
-				fillWhite(canvas);
+			if (canvas != null) {
+				synchronized (holder) {
+					fillWhite(canvas);
 
-				// for test
-				/*
-				 * for (int i = 0; i < 90; i++) { pointArray.addPoint(x_center +
-				 * i, y_center - 2 * i); }
-				 */
-
-				Paint paint = new Paint();
-				paint.setColor(Color.BLUE);
-
-				// draw points
-				for (int i = 0; i < pointArray.getSize(); i++) {
+					// for test
 					/*
-					 * imageRect.set((int) (pointArray.getX(i) - image
-					 * .getIntrinsicWidth() / 2), (int) (pointArray .getY(i) -
-					 * image.getIntrinsicWidth() / 2), (int) (pointArray.getX(i)
-					 * + image .getIntrinsicWidth() / 2), (int)
-					 * (pointArray.getY(i) + image .getIntrinsicHeight() / 2));
-					 * image.setBounds(imageRect); image.draw(canvas);
-					 * 					 */
-					canvas.drawCircle((float) pointArray.getX(i),
-							(float) pointArray.getY(i), 2.0f, paint);
-				}
+					 * for (int i = 0; i < 90; i++) {
+					 * pointArray.addPoint(x_center + i, y_center - 2 * i); }
+					 */
 
-				// draw unit bar
-				paint.setColor(Color.BLACK);
-				// culDP: currentUnitLengthDP
-				double culDP = unitDP * unitLength[currentUnitLengthIndex];
-				canvas.drawLine((float) (xCenter - culDP / 2),
-						2 * yCenter - 50, (float) (xCenter + culDP / 2),
-						2 * yCenter - 50, paint);
-				canvas.drawLine((float) (xCenter - culDP / 2),
-						2 * yCenter - 45, (float) (xCenter - culDP / 2),
-						2 * yCenter - 55, paint);
-				canvas.drawLine((float) (xCenter + culDP / 2),
-						2 * yCenter - 45, (float) (xCenter + 0.5 * culDP),
-						2 * yCenter - 55, paint);
-				paint.setTextSize(20);
-				canvas.drawText(unitString(), (float) xCenter,
-						2 * yCenter - 60, paint);
+					Paint paint = new Paint();
+					paint.setColor(Color.BLUE);
+
+					// draw points
+					for (int i = 0; i < pointArray.getSize(); i++) {
+						/*
+						 * imageRect.set((int) (pointArray.getX(i) - image
+						 * .getIntrinsicWidth() / 2), (int) (pointArray .getY(i)
+						 * - image.getIntrinsicWidth() / 2), (int)
+						 * (pointArray.getX(i) + image .getIntrinsicWidth() /
+						 * 2), (int) (pointArray.getY(i) + image
+						 * .getIntrinsicHeight() / 2));
+						 * image.setBounds(imageRect); image.draw(canvas);
+						 */
+						canvas.drawCircle((float) pointArray.getX(i),
+								(float) pointArray.getY(i), 2.0f, paint);
+					}
+
+					// draw unit bar
+					paint.setColor(Color.BLACK);
+					// culDP: currentUnitLengthDP
+					double culDP = unitDP * unitLength[currentUnitLengthIndex];
+					canvas.drawLine((float) (xCenter - culDP / 2),
+							2 * yCenter - 50, (float) (xCenter + culDP / 2),
+							2 * yCenter - 50, paint);
+					canvas.drawLine((float) (xCenter - culDP / 2),
+							2 * yCenter - 45, (float) (xCenter - culDP / 2),
+							2 * yCenter - 55, paint);
+					canvas.drawLine((float) (xCenter + culDP / 2),
+							2 * yCenter - 45, (float) (xCenter + 0.5 * culDP),
+							2 * yCenter - 55, paint);
+					paint.setTextSize(20);
+					canvas.drawText(unitString(), (float) xCenter,
+							2 * yCenter - 60, paint);
+				}
 			}
 		} finally {
 			if (canvas != null) {
@@ -326,15 +328,16 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 *             it.
 	 * @param context
 	 *            context
-	 
-	public final void loadImages(final Context context) {
-		//Resources r = context.getResources();
-		// background = BitmapFactory.decodeResource(r, R.drawable.background);
-//		image = r.getDrawable(R.drawable.item);
-	//	imageRect = new Rect(0, 0, image.getIntrinsicWidth(),
-		//		image.getIntrinsicHeight());
-
-	}*/
+	 * 
+	 *            public final void loadImages(final Context context) {
+	 *            //Resources r = context.getResources(); // background =
+	 *            BitmapFactory.decodeResource(r, R.drawable.background); //
+	 *            image = r.getDrawable(R.drawable.item); // imageRect = new
+	 *            Rect(0, 0, image.getIntrinsicWidth(), //
+	 *            image.getIntrinsicHeight());
+	 * 
+	 *            }
+	 */
 
 	/**
 	 * This method is to get Lat and Lon info from NMEA sentence and set in the
