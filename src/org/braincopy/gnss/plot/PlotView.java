@@ -42,20 +42,6 @@ import android.view.SurfaceView;
  * 
  */
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
-	/**
-	 * background.
-	 */
-	// private Bitmap background;
-
-	/**
-	 * image for points.
-	 */
-	// private Drawable image;
-
-	/**
-	 * image rectangle for points.
-	 */
-	// private Rect imageRect;
 
 	/**
 	 * latitude of center [degree].
@@ -66,11 +52,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 * Longitude of center [degree].
 	 */
 	private double lonCenter = Double.MAX_VALUE;
-
-	/**
-	 * matrix for the size adjust.
-	 */
-	// private Matrix matrix;
 
 	/**
 	 * center of plot area.
@@ -213,15 +194,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
 					// draw points
 					for (int i = 0; i < pointArray.getSize(); i++) {
-						/*
-						 * imageRect.set((int) (pointArray.getX(i) - image
-						 * .getIntrinsicWidth() / 2), (int) (pointArray .getY(i)
-						 * - image.getIntrinsicWidth() / 2), (int)
-						 * (pointArray.getX(i) + image .getIntrinsicWidth() /
-						 * 2), (int) (pointArray.getY(i) + image
-						 * .getIntrinsicHeight() / 2));
-						 * image.setBounds(imageRect); image.draw(canvas);
-						 */
 						canvas.drawCircle((float) pointArray.getX(i),
 								(float) pointArray.getY(i), 2.0f, paint);
 					}
@@ -323,21 +295,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		return result;
 	}
 
-	/**
-	 * @deprecated this method might be not useless. Please consider to delete
-	 *             it.
-	 * @param context
-	 *            context
-	 * 
-	 *            public final void loadImages(final Context context) {
-	 *            //Resources r = context.getResources(); // background =
-	 *            BitmapFactory.decodeResource(r, R.drawable.background); //
-	 *            image = r.getDrawable(R.drawable.item); // imageRect = new
-	 *            Rect(0, 0, image.getIntrinsicWidth(), //
-	 *            image.getIntrinsicHeight());
-	 * 
-	 *            }
-	 */
 
 	/**
 	 * This method is to get Lat and Lon info from NMEA sentence and set in the

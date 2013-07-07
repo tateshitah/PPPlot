@@ -18,5 +18,12 @@
     <string name="menu_fix_track_center_name">Fix Track Center</string>
     <string name="menu_zoom_up_name">+</string>
     <string name="menu_zoom_down_name">-</string>
+    <string name="button_option_name">opt</string>
+    <string name="button_ok_name">OK</string>
+    <string name="button_cancel_name">Cancel</string>
+    <string-array name="stream_type">
+        <item >TCPClient</item>
+        <item >embeded GPS</item>
+    </string-array>
 
 </resources>

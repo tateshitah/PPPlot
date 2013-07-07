@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/dialog_ip_setting_hint"
         android:inputType="text" >
-
+        <requestFocus />
+        
     </EditText>
 
     <EditText
@@ -20,7 +21,6 @@
         android:hint="@string/dialog_port_name"
         android:inputType="number" >
 
-        <requestFocus />
     </EditText>
 
 </LinearLayout>

@@ -36,7 +36,7 @@ import android.util.Log;
 /**
  * 
  * @author Hiroaki Tateshita
- * @version 0.4
+ * @version 0.42
  *
  */
 public class TCPClientThread extends Thread {
@@ -108,10 +108,10 @@ public class TCPClientThread extends Thread {
 
 	/**
 	 * 
-	 * @param hostname_ hostname_
+	 * @param hn hostname
 	 */
-	public final void setHostName(final String hostname_) {
-		this.hostname = hostname_;
+	public final void setHostName(final String hn) {
+		this.hostname = hn;
 
 	}
 
@@ -126,18 +126,18 @@ public class TCPClientThread extends Thread {
 	
 	/**
 	 * 
-	 * @param _messageListener
+	 * @param ml MessageLister
 	 */
-	public void setMessageListener(MessageListener _messageListener) {
-		this.messageListener = _messageListener;
+	public final void setMessageListener(final MessageListener ml) {
+		this.messageListener = ml;
 
 	}
 
 	/**
 	 * 
-	 * @return
+	 * @return running or not
 	 */
-	public boolean isRunning() {
+	public final boolean isRunning() {
 		return this.isRunning;
 	}
 
