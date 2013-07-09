@@ -342,8 +342,8 @@ public class MainActivity extends Activity {
 					if (tmpPortNumber > -1) {
 						editor.putInt("port number", tmpPortNumber);
 						editor.commit();
-						statusTextView.append("set-> ip: " + tmpIpAddress
-								+ ", port: " + tmpPortNumber + "\n");
+						//statusTextView.append("set-> ip: " + tmpIpAddress
+							//	+ ", port: " + tmpPortNumber + "\n");
 					}
 				}
 				connectionSettingDialog.dismiss();
@@ -478,6 +478,8 @@ public class MainActivity extends Activity {
 				});
 			}
 		});
+		
+		plotview.setCurrentUnitLengthIndex(13);
 		embeddedGPSThread.startRunning();
 		menuConnect.setEnabled(false);
 		menuDisconnect.setEnabled(true);
@@ -523,6 +525,7 @@ public class MainActivity extends Activity {
 					});
 				}
 			});
+			plotview.setCurrentUnitLengthIndex(9);
 			tcpClientThread.start();
 
 			// wait until tcpClientThread set running flag.

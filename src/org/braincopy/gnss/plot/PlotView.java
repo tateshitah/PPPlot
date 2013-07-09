@@ -295,7 +295,14 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		return result;
 	}
 
-
+	/**
+	 * 
+	 * @param culi
+	 */
+	public final void setCurrentUnitLengthIndex(int culi){
+		this.currentUnitLengthIndex = culi;
+	}
+	
 	/**
 	 * This method is to get Lat and Lon info from NMEA sentence and set in the
 	 * pointArray with x-y frame.
