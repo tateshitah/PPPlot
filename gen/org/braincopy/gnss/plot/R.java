@@ -31,24 +31,34 @@ public final class R {
     }
     public static final class id {
         public static final int LinearLayout1=0x7f090000;
-        public static final int cancel_button=0x7f090009;
-        public static final int group_checkable_menu=0x7f09000e;
+        public static final int TextView01=0x7f090008;
+        public static final int TextView02=0x7f090009;
+        public static final int TextView03=0x7f09000b;
+        public static final int TextView04=0x7f09000f;
+        public static final int cancel_button=0x7f090013;
+        public static final int group_checkable_menu=0x7f090018;
         public static final int ip_editText=0x7f090004;
-        public static final int menu_clear_item=0x7f09000d;
-        public static final int menu_connect_item=0x7f09000a;
-        public static final int menu_connectionSetting_item=0x7f09000c;
-        public static final int menu_disconnect_item=0x7f09000b;
-        public static final int menu_exit_item=0x7f090010;
-        public static final int menu_fix_track_center_item=0x7f09000f;
-        public static final int menu_zoom_down_item=0x7f090012;
-        public static final int menu_zoom_up_item=0x7f090011;
-        public static final int ok_button=0x7f090008;
-        public static final int option_button=0x7f090007;
+        public static final int menu_clear_item=0x7f090017;
+        public static final int menu_connect_item=0x7f090014;
+        public static final int menu_connectionSetting_item=0x7f090016;
+        public static final int menu_disconnect_item=0x7f090015;
+        public static final int menu_exit_item=0x7f09001a;
+        public static final int menu_fix_track_center_item=0x7f090019;
+        public static final int menu_zoom_down_item=0x7f09001c;
+        public static final int menu_zoom_up_item=0x7f09001b;
+        public static final int ok_button=0x7f090012;
+        public static final int option_button1=0x7f09000d;
+        public static final int option_button2=0x7f090011;
         public static final int plotView1=0x7f090001;
         public static final int port_editText=0x7f090005;
         public static final int scrollView1=0x7f090002;
         public static final int status_textView=0x7f090003;
-        public static final int stream_type_spinner1=0x7f090006;
+        public static final int stream_type_spinner1=0x7f09000c;
+        public static final int stream_type_spinner2=0x7f090010;
+        public static final int tableRow1=0x7f090006;
+        public static final int tableRow2=0x7f09000a;
+        public static final int tableRow3=0x7f09000e;
+        public static final int textView1=0x7f090007;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -68,7 +78,11 @@ public final class R {
         public static final int button_test_name=0x7f050009;
         public static final int dialog_connectionSetting_message=0x7f050005;
         public static final int dialog_ip_setting_hint=0x7f050007;
+        public static final int dialog_option_label=0x7f050015;
         public static final int dialog_port_name=0x7f050008;
+        public static final int dialog_stream_type_label=0x7f050014;
+        public static final int dialog_stream_type_number_label_1=0x7f050016;
+        public static final int dialog_stream_type_number_label_2=0x7f050017;
         public static final int hello_blank_fragment=0x7f05000a;
         public static final int hello_world=0x7f050002;
         public static final int menu_clear_name=0x7f05000d;

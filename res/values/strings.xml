@@ -25,5 +25,9 @@
         <item >TCPClient</item>
         <item >embeded GPS</item>
     </string-array>
+        <string name="dialog_stream_type_label">Stream Type</string>
+        <string name="dialog_option_label">Opt</string>
+        <string name="dialog_stream_type_number_label_1">(1)</string>
+        <string name="dialog_stream_type_number_label_2">(2)</string>
 
 </resources>

@@ -69,6 +69,11 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	private PointArray pointArray;
 
 	/**
+	 * array of points (x, y) .
+	 */
+	private PointArray pointArray2;
+	
+	/**
 	 * initial unitDP value. it means 100dp means 1m.
 	 */
 	private final double initialUnitDP = 100.0;
@@ -197,7 +202,14 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 						canvas.drawCircle((float) pointArray.getX(i),
 								(float) pointArray.getY(i), 2.0f, paint);
 					}
+					
+					// draw points for connection (2)
+					paint.setColor(Color.RED);
 
+					for (int i = 0; i < pointArray2.getSize(); i++) {
+						canvas.drawCircle((float) pointArray2.getX(i),
+								(float) pointArray2.getY(i), 2.0f, paint);
+					}
 					// draw unit bar
 					paint.setColor(Color.BLACK);
 					// culDP: currentUnitLengthDP
