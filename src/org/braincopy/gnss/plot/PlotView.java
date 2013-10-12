@@ -38,7 +38,7 @@ import android.view.SurfaceView;
  * PlotView is custom SurfaceView for plotting animation.
  * 
  * @author Hiroaki Tateshita
- * @version 0.52
+ * @version 0.80
  * 
  */
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
@@ -66,13 +66,13 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	/**
 	 * array of points (x, y) .
 	 */
-	private PointArray pointArray;
+	private PointArray pointArray1;
 
 	/**
 	 * array of points (x, y) .
 	 */
 	private PointArray pointArray2;
-	
+
 	/**
 	 * initial unitDP value. it means 100dp means 1m.
 	 */
@@ -198,11 +198,11 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 					paint.setColor(Color.BLUE);
 
 					// draw points
-					for (int i = 0; i < pointArray.getSize(); i++) {
-						canvas.drawCircle((float) pointArray.getX(i),
-								(float) pointArray.getY(i), 2.0f, paint);
+					for (int i = 0; i < pointArray1.getSize(); i++) {
+						canvas.drawCircle((float) pointArray1.getX(i),
+								(float) pointArray1.getY(i), 2.0f, paint);
 					}
-					
+
 					// draw points for connection (2)
 					paint.setColor(Color.RED);
 
@@ -311,18 +311,22 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 * 
 	 * @param culi
 	 */
-	public final void setCurrentUnitLengthIndex(int culi){
+	public final void setCurrentUnitLengthIndex(int culi) {
 		this.currentUnitLengthIndex = culi;
 	}
-	
+
 	/**
 	 * This method is to get Lat and Lon info from NMEA sentence and set in the
 	 * pointArray with x-y frame.
 	 * 
 	 * @param message
 	 *            it should be NMEA and include RMC
+	 * @param connectNumber
+	 *            (1) or (2)
+	 *            @param isMultiThread 
 	 */
-	public final void setPoint(final String message) {
+	public final synchronized void setPoint(final String message,
+			int connectNumber, boolean isMultiThread) {
 		if (message.contains("RMC")) {
 			String[] rmcMessages = message.split(",");
 			if (rmcMessages[2].equals("A")) {
@@ -353,14 +357,30 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 						/ 360.0 * Math.cos(lat * Math.PI / 180) * unitDP;
 				double deltaY = 2 * radiusOfEarth * Math.PI * (latCenter - lat)
 						/ 360.0 * unitDP;
-				// fixView = false;
+
 				if (fixTrackCenter) {
-					pointArray.moveAll(-1 * deltaX, -1 * deltaY);
-					pointArray.addPoint(xCenter, yCenter);
+					//case multi and con 1
+					// pa
+					if(isMultiThread && connectNumber==MainActivity.CONNECTION_1){
+						
+					}
+					if (connectNumber == MainActivity.CONNECTION_1) {
+						pointArray1.moveAll(-1 * deltaX, -1 * deltaY);
+						pointArray1.addPoint(xCenter, yCenter);
+					} else if (connectNumber == MainActivity.CONNECTION_2) {
+						pointArray2.moveAll(-1 * deltaX, -1 * deltaY);
+						pointArray2.addPoint(xCenter, yCenter);
+					}
 					lonCenter = lon;
 					latCenter = lat;
 				} else {
-					pointArray.addPoint(xCenter + deltaX, yCenter + deltaY);
+					if (connectNumber == MainActivity.CONNECTION_1) {
+						pointArray1
+								.addPoint(xCenter + deltaX, yCenter + deltaY);
+					} else if (connectNumber == MainActivity.CONNECTION_2) {
+						pointArray2
+								.addPoint(xCenter + deltaX, yCenter + deltaY);
+					}
 				}
 			} else {
 				Log.e("hiro", "not validated nmea: " + message);
@@ -380,7 +400,8 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		// matrix = new Matrix();
 		drawPlotArea();
 		final int maxPointNumber = 1000;
-		pointArray = new PointArray(maxPointNumber);
+		pointArray1 = new PointArray(maxPointNumber);
+		pointArray2 = new PointArray(maxPointNumber);
 		// for test
 		/*
 		 * for (int i = 0; i < 100; i++) { pointArray.addPoint( x_center + 100 *
@@ -402,11 +423,13 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 */
 	public final void setZoom(final double d) {
 		unitDP = unitDP * d;
-		pointArray.zoomAll(d, xCenter, yCenter);
+		pointArray1.zoomAll(d, xCenter, yCenter);
+		pointArray2.zoomAll(d, xCenter, yCenter);
 
 	}
 
 	/**
+	 * move all points of both connection (1) and connection (2)
 	 * 
 	 * @param deltaX
 	 *            move value of x
@@ -414,7 +437,8 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 *            move value of y
 	 */
 	public final void moveAll(final double deltaX, final double deltaY) {
-		this.pointArray.moveAll(deltaX, deltaY);
+		this.pointArray1.moveAll(deltaX, deltaY);
+		this.pointArray2.moveAll(deltaX, deltaY);
 		double deltaLon = deltaX
 				* 180
 				/ (radiusOfEarth * Math.PI
@@ -429,7 +453,8 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 * 
 	 */
 	public final void clear() {
-		this.pointArray.setSize(0);
+		this.pointArray1.setSize(0);
+		this.pointArray2.setSize(0);
 
 	}
 
@@ -442,9 +467,13 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 		this.fixTrackCenter = fixViewflag;
 
 		// when false to true
-		if (fixViewflag && pointArray.getSize() > 0) {
-			double deltaX = xCenter - pointArray.getLatestX();
-			double deltaY = yCenter - pointArray.getLatestY();
+		if (fixViewflag && pointArray1.getSize() > 0) {
+			double deltaX = xCenter - pointArray1.getLatestX();
+			double deltaY = yCenter - pointArray1.getLatestY();
+			moveAll(deltaX, deltaY);
+		} else if (fixViewflag && pointArray2.getSize() > 0) {
+			double deltaX = xCenter - pointArray2.getLatestX();
+			double deltaY = yCenter - pointArray2.getLatestY();
 			moveAll(deltaX, deltaY);
 		}
 	}

@@ -104,12 +104,12 @@ public class MainActivity extends Activity {
 	private TCPClientThread tcpClientThread2 = null;
 
 	/**
-	 * thread for embedded GPS thread for connection (1)
+	 * thread for embedded GPS thread for connection (1).
 	 */
 	private EmbeddedGPSThread embeddedGPSThread1 = null;
-	
+
 	/**
-	 * thread for embedded GPS thread for connection (2)
+	 * thread for embedded GPS thread for connection (2).
 	 */
 	private EmbeddedGPSThread embeddedGPSThread2 = null;
 	/**
@@ -138,7 +138,7 @@ public class MainActivity extends Activity {
 	private final int waitingMiliSec = 1000;
 
 	/**
-	 * location Manager for positioning
+	 * location Manager for positioning.
 	 */
 	private LocationManager locationManager;
 
@@ -151,16 +151,22 @@ public class MainActivity extends Activity {
 	 * one of stream type. get stream data from TCP server as TCP client
 	 */
 	public static final int TCP_CLIENT_STREAM_TYPE = 0;
-	
+
 	/**
 	 * 
 	 */
-	private static final int CONNECTION_1 = 1;
-	
+	public static final int CONNECTION_1 = 1;
+
 	/**
 	 * 
 	 */
-	private static final int CONNECTION_2 = 2;
+	public static final int CONNECTION_2 = 2;
+	
+	/**
+	 * true: both (1) and (2) are running
+	 * false: either (1) and (2) are running
+	 */
+	private boolean isMultiThread = false;
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -182,7 +188,10 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * define the actions when the option selected
+	 * define the actions when the option selected.
+	 * 
+	 * @param item
+	 * @return true
 	 */
 	@Override
 	public final boolean onOptionsItemSelected(final MenuItem item) {
@@ -194,46 +203,17 @@ public class MainActivity extends Activity {
 		streamType2 = sharedPref.getInt("stream type2", -1);
 		switch (item.getItemId()) {
 		case R.id.menu_connect_item:
-			if(streamType1 != -1){
-				connect(CONNECTION_1,streamType1, sharedPref);
+			if(streamType1 != -1 && streamType2 != -1){
+				this.isMultiThread = true;
+			}else{
+				this.isMultiThread = false;
 			}
-			if(streamType2 != -1){
-				connect(CONNECTION_2,streamType2, sharedPref);
+			if (streamType1 != -1) {
+				connect(CONNECTION_1, streamType1, sharedPref);
 			}
-			//from here
-			/*
-			if (menuConnect != null && menuDisconnect != null
-					&& streamType1 == TCP_CLIENT_STREAM_TYPE) {
-				String hostname = sharedPref.getString("ip_address1", null);
-				int portNumber = sharedPref.getInt("port number1", 0);
-				try {
-					connect(hostname, portNumber);
-				} catch (NetworkOnMainThreadException e) {
-					statusTextView.append("exception: please confirm "
-							+ "internet connection.\n");
-					Log.e("error", e.toString());
-				} catch (UnknownHostException e) {
-					statusTextView.append("unknown host: " + hostname + "\n");
-					e.printStackTrace();
-				} catch (IOException e) {
-					statusTextView.append("error: " + e
-							+ " might have failed to create socket: "
-							+ hostname + "\n");
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					statusTextView.append("error: " + e
-							+ " might have failed to deal with thread:\n");
-					e.printStackTrace();
-				}
-			} else if (streamType1 == EMBEDDED_GPS_STREAM_TYPE) {
-				statusTextView.append("start enbedded GPS sensor mode\n");
-				startGPS();
-			} else {
-				Log.e("error", "couldn't find MenuItem at "
-						+ "MainActivity.onOptionsItemSelected()");
+			if (streamType2 != -1) {
+				connect(CONNECTION_2, streamType2, sharedPref);
 			}
-			*/
-			//to here
 
 			return true;
 		case R.id.menu_connectionSetting_item:
@@ -250,10 +230,10 @@ public class MainActivity extends Activity {
 					}
 				}
 			} else if (streamType1 == EMBEDDED_GPS_STREAM_TYPE) {
-				if(this.embeddedGPSThread1 != null){
+				if (this.embeddedGPSThread1 != null) {
 					this.embeddedGPSThread1.stopRunning();
 				}
-				if(this.embeddedGPSThread2 != null){
+				if (this.embeddedGPSThread2 != null) {
 					this.embeddedGPSThread2.stopRunning();
 				}
 				statusTextView.append("stop enbedded GPS mode\n");
@@ -291,10 +271,10 @@ public class MainActivity extends Activity {
 					statusTextView.append(e.getMessage());
 				}
 			}
-			if(this.embeddedGPSThread1 != null){
+			if (this.embeddedGPSThread1 != null) {
 				this.embeddedGPSThread1.stopRunning();
 			}
-			if(this.embeddedGPSThread2 != null){
+			if (this.embeddedGPSThread2 != null) {
 				this.embeddedGPSThread2.stopRunning();
 			}
 			this.finish();
@@ -304,19 +284,26 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void connect(int connectionNumber, int streamType, SharedPreferences sharedPref) {
+	/**
+	 * 
+	 * @param connectionNumber
+	 * @param streamType
+	 * @param sharedPref
+	 */
+	private void connect(int connectionNumber, int streamType,
+			SharedPreferences sharedPref) {
 		if (streamType == TCP_CLIENT_STREAM_TYPE) {
 			String hostname = "";
 			int portNumber = -1;
-			if(connectionNumber == CONNECTION_1){
+			if (connectionNumber == CONNECTION_1) {
 				hostname = sharedPref.getString("ip_address1", null);
 				portNumber = sharedPref.getInt("port number1", 0);
-			}else if(connectionNumber == CONNECTION_2){
+			} else if (connectionNumber == CONNECTION_2) {
 				hostname = sharedPref.getString("ip_address2", null);
-				portNumber = sharedPref.getInt("port number2", 0);				
+				portNumber = sharedPref.getInt("port number2", 0);
 			}
 			try {
-				connect(hostname, portNumber,connectionNumber);
+				connect(hostname, portNumber, connectionNumber);
 			} catch (NetworkOnMainThreadException e) {
 				statusTextView.append("exception: please confirm "
 						+ "internet connection.\n");
@@ -326,8 +313,8 @@ public class MainActivity extends Activity {
 				e.printStackTrace();
 			} catch (IOException e) {
 				statusTextView.append("error: " + e
-						+ " might have failed to create socket: "
-						+ hostname + "\n");
+						+ " might have failed to create socket: " + hostname
+						+ "\n");
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				statusTextView.append("error: " + e
@@ -341,7 +328,7 @@ public class MainActivity extends Activity {
 			Log.e("error", "couldn't find MenuItem at "
 					+ "MainActivity.onOptionsItemSelected()");
 		}
-		
+
 	}
 
 	/**
@@ -418,14 +405,15 @@ public class MainActivity extends Activity {
 			}
 		};
 		optionButton2.setOnClickListener(optiononClickListener2);
-		
+
 		// for setting spinner for connection (2)
 		Spinner streamTypeSpinner2 = (Spinner) connectionSettingDialog
 				.findViewById(R.id.stream_type_spinner2);
 		streamTypeSpinner2.setAdapter(adapter);
-		OnItemSelectedListener strTypeSpin2OISL = createOISListener(CONNECTION_2, optionButton2);
+		OnItemSelectedListener strTypeSpin2OISL = createOISListener(
+				CONNECTION_2, optionButton2);
 		streamTypeSpinner2.setOnItemSelectedListener(strTypeSpin2OISL);
-		
+
 		// for setting ok button
 		final Button okButton = (Button) connectionSettingDialog
 				.findViewById(R.id.ok_button);
@@ -484,7 +472,8 @@ public class MainActivity extends Activity {
 
 	}
 
-	private OnItemSelectedListener createOISListener(final int connectionNumber, final Button optionButton){
+	private OnItemSelectedListener createOISListener(
+			final int connectionNumber, final Button optionButton) {
 		OnItemSelectedListener result = new OnItemSelectedListener() {
 
 			@Override
@@ -493,10 +482,10 @@ public class MainActivity extends Activity {
 				SharedPreferences sharedPref = PreferenceManager
 						.getDefaultSharedPreferences(context);
 				SharedPreferences.Editor editor = sharedPref.edit();
-				
-				if(connectionNumber == CONNECTION_1){
+
+				if (connectionNumber == CONNECTION_1) {
 					editor.putInt("stream type1", index);
-				}else if (connectionNumber == CONNECTION_2){
+				} else if (connectionNumber == CONNECTION_2) {
 					editor.putInt("stream type2", index);
 				}
 				editor.commit();
@@ -538,9 +527,9 @@ public class MainActivity extends Activity {
 		final EditText ipEditText = (EditText) dialogView
 				.findViewById(R.id.ip_editText);
 		String hostname = "";
-		if(connectionNumber == CONNECTION_1){
+		if (connectionNumber == CONNECTION_1) {
 			hostname = sharedPref.getString("ip_address1", "");
-		} else if(connectionNumber == CONNECTION_2){
+		} else if (connectionNumber == CONNECTION_2) {
 			hostname = sharedPref.getString("ip_address2", "");
 		}
 		if (!hostname.equals("")) {
@@ -549,10 +538,10 @@ public class MainActivity extends Activity {
 		final EditText portEditText = (EditText) dialogView
 				.findViewById(R.id.port_editText);
 		int portNumber = -1;
-		if(connectionNumber == CONNECTION_1){
+		if (connectionNumber == CONNECTION_1) {
 			portNumber = sharedPref.getInt("port number1", -1);
-		}else if (connectionNumber == CONNECTION_2){
-			portNumber = sharedPref.getInt("port number2", -1);		
+		} else if (connectionNumber == CONNECTION_2) {
+			portNumber = sharedPref.getInt("port number2", -1);
 		}
 		if (portNumber > 0) {
 			portEditText.setHint("current port: " + portNumber);
@@ -571,18 +560,24 @@ public class MainActivity extends Activity {
 						int portNumber = Integer.parseInt(portNumberStr);
 						if (!hostname.equals("")) {
 							if (portNumber > 0) {
-								if(connectionNumber == CONNECTION_1){
-								editor.putString("tmp_ip_address1", hostname);
-								editor.putInt("tmp_port number1", portNumber);
-								editor.commit();
-								statusTextView.append("set-> ip(1): " + hostname
-										+ ", port(1): " + portNumber + "\n");
-								}else if(connectionNumber == CONNECTION_2){
-									editor.putString("tmp_ip_address2", hostname);
-									editor.putInt("tmp_port number2", portNumber);
+								if (connectionNumber == CONNECTION_1) {
+									editor.putString("tmp_ip_address1",
+											hostname);
+									editor.putInt("tmp_port number1",
+											portNumber);
 									editor.commit();
-									statusTextView.append("set-> ip(2): " + hostname
-											+ ", port(2): " + portNumber + "\n");				
+									statusTextView.append("set-> ip(1): "
+											+ hostname + ", port(1): "
+											+ portNumber + "\n");
+								} else if (connectionNumber == CONNECTION_2) {
+									editor.putString("tmp_ip_address2",
+											hostname);
+									editor.putInt("tmp_port number2",
+											portNumber);
+									editor.commit();
+									statusTextView.append("set-> ip(2): "
+											+ hostname + ", port(2): "
+											+ portNumber + "\n");
 								}
 							} else {
 								statusTextView
@@ -625,9 +620,10 @@ public class MainActivity extends Activity {
 	/**
 	 * 
 	 */
-	private void startGPS(int connectNumber) {
+	private void startGPS(final int connectNumber) {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		EmbeddedGPSThread embeddedGPSThread = new EmbeddedGPSThread(locationManager);
+		EmbeddedGPSThread embeddedGPSThread = new EmbeddedGPSThread(
+				locationManager);
 		final Handler handler = new Handler();
 		embeddedGPSThread.setMessageListener(new MessageListener() {
 
@@ -637,7 +633,7 @@ public class MainActivity extends Activity {
 
 					@Override
 					public void run() {
-						plotview.setPoint(message);
+						plotview.setPoint(message,connectNumber,isMultiThread);
 						plotview.plot();
 						// statusTextView.append(message + "\n");
 						scrollview.scrollTo(0, statusTextView.getBottom());
@@ -646,14 +642,14 @@ public class MainActivity extends Activity {
 				});
 			}
 		});
-		
+
 		plotview.setCurrentUnitLengthIndex(13);
 		embeddedGPSThread.startRunning();
 		menuConnect.setEnabled(false);
 		menuDisconnect.setEnabled(true);
-		if(connectNumber == CONNECTION_1){
+		if (connectNumber == CONNECTION_1) {
 			this.embeddedGPSThread1 = embeddedGPSThread;
-		}else if (connectNumber == CONNECTION_2){
+		} else if (connectNumber == CONNECTION_2) {
 			this.embeddedGPSThread2 = embeddedGPSThread;
 		}
 	}
@@ -669,8 +665,8 @@ public class MainActivity extends Activity {
 	 * @throws InterruptedException
 	 *             thread
 	 */
-	protected final void connect(final String hostname, final int portNumber, int connectionNumber)
-			throws IOException, InterruptedException {
+	protected final void connect(final String hostname, final int portNumber,
+			final int connectionNumber) throws IOException, InterruptedException {
 		statusTextView.append("connecting... -> ip: " + hostname + ", port: "
 				+ portNumber + "\n");
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -690,7 +686,7 @@ public class MainActivity extends Activity {
 
 						@Override
 						public void run() {
-							plotview.setPoint(message);
+							plotview.setPoint(message, connectionNumber,isMultiThread);
 							plotview.plot();
 							// statusTextView.append(message + "\n");
 							scrollview.scrollTo(0, statusTextView.getBottom());
@@ -712,9 +708,9 @@ public class MainActivity extends Activity {
 			} else {
 				statusTextView.append("not connected.\n");
 			}
-			if(connectionNumber == CONNECTION_1){
+			if (connectionNumber == CONNECTION_1) {
 				this.tcpClientThread1 = tcpClientThread;
-			}else if (connectionNumber == CONNECTION_2){
+			} else if (connectionNumber == CONNECTION_2) {
 				this.tcpClientThread2 = tcpClientThread;
 			}
 		} else {
