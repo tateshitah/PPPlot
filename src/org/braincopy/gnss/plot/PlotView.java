@@ -362,8 +362,26 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 					//case multi and con 1
 					// pa
 					if(isMultiThread && connectNumber==MainActivity.CONNECTION_1){
-						
+						pointArray1.moveAll(-1*deltaX, -1*deltaY);
+						pointArray2.moveAll(-1*deltaX, -1*deltaY);
+						pointArray1.addPoint(xCenter, yCenter);
+						lonCenter = lon;
+						latCenter = lat;
+					}else if (isMultiThread && connectNumber == MainActivity.CONNECTION_2){
+						pointArray2
+						.addPoint(xCenter + deltaX, yCenter + deltaY);						
+					}else if (!isMultiThread && connectNumber==MainActivity.CONNECTION_1){
+						pointArray1.moveAll(-1*deltaX, -1*deltaY);
+						pointArray1.addPoint(xCenter, yCenter);
+						lonCenter = lon;
+						latCenter = lat;						
+					}else if (!isMultiThread&&connectNumber==MainActivity.CONNECTION_2){
+						pointArray2.moveAll(-1*deltaX, -1*deltaY);
+						pointArray2.addPoint(xCenter, yCenter);
+						lonCenter = lon;
+						latCenter = lat;						
 					}
+					/*
 					if (connectNumber == MainActivity.CONNECTION_1) {
 						pointArray1.moveAll(-1 * deltaX, -1 * deltaY);
 						pointArray1.addPoint(xCenter, yCenter);
@@ -373,6 +391,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 					}
 					lonCenter = lon;
 					latCenter = lat;
+					*/
 				} else {
 					if (connectNumber == MainActivity.CONNECTION_1) {
 						pointArray1

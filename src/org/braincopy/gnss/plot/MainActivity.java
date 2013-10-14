@@ -618,7 +618,8 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * 
+	 * start the plotting by using embedded GPS sensor.
+	 * @param connectNumber connection Number (1) or (2) 
 	 */
 	private void startGPS(final int connectNumber) {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
