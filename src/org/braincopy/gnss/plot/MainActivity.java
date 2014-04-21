@@ -39,6 +39,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -174,6 +175,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		plotview = (PlotView) findViewById(R.id.plotView1);
 		scrollview = (ScrollView) findViewById(R.id.scrollView1);
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	}
 
