@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2013 braincopy.org
+Copyright (c) 2013-2014 braincopy.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,9 @@ package org.braincopy.gnss.plot;
 import android.util.Log;
 
 /**
- * 
+ * Que of points.
  * @author Hiroaki Tateshita
- * @version 0.4
+ * @version 0.5
  * 
  */
 public class PointArray {
@@ -55,6 +55,9 @@ public class PointArray {
 	 */
 	PointArray(int _size_max) {
 		pointArray = new Point[_size_max];
+		for(int i =0;i<_size_max;i++){
+			pointArray[i]= new Point(-1000000,-1000000);
+		}
 		this.size = 0;
 		cursor = 0;
 	}
@@ -66,13 +69,17 @@ public class PointArray {
 	 * @param y
 	 *            y of the point which will be added
 	 */
-	public final void addPoint(final double x, final double y) {
+	public final void addPoint(final double _x, final double _y) {
 		if (this.size < pointArray.length - 1) {
-			pointArray[this.size] = new Point(x, y);
+			//pointArray[this.size] = new Point(_x, _y);
+			pointArray[this.size].x = _x;
+			pointArray[this.size].y = _y;
 			this.size++;
 			this.cursor++;
 		} else if (this.size == pointArray.length - 1) {
-			pointArray[this.cursor] = new Point(x, y);
+			//pointArray[this.cursor] = new Point(x, y);
+			pointArray[this.size].x = _x;
+			pointArray[this.size].y = _y;
 			if (this.cursor < pointArray.length - 1) {
 				this.cursor++;
 			} else if (this.cursor == pointArray.length - 1) {
