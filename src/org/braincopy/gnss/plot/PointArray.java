@@ -77,9 +77,9 @@ public class PointArray {
 			this.size++;
 			this.cursor++;
 		} else if (this.size == pointArray.length - 1) {
-			//pointArray[this.cursor] = new Point(x, y);
-			pointArray[this.size].x = _x;
-			pointArray[this.size].y = _y;
+			//pointArray[this.cursor] = new Point(_x, _y);
+			pointArray[this.cursor].x = _x;
+			pointArray[this.cursor].y = _y;
 			if (this.cursor < pointArray.length - 1) {
 				this.cursor++;
 			} else if (this.cursor == pointArray.length - 1) {
