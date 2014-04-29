@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2013-2014 braincopy.org
+Copyright (c) 2013-2014 Hiroaki Tateshita
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import android.util.Log;
 
 /**
  * Que of points.
+ * 
  * @author Hiroaki Tateshita
  * @version 0.5
  * 
@@ -55,8 +56,8 @@ public class PointArray {
 	 */
 	PointArray(int _size_max) {
 		pointArray = new Point[_size_max];
-		for(int i =0;i<_size_max;i++){
-			pointArray[i]= new Point(-1000000,-1000000);
+		for (int i = 0; i < _size_max; i++) {
+			pointArray[i] = new Point(-1000000, -1000000);
 		}
 		this.size = 0;
 		cursor = 0;
@@ -71,13 +72,13 @@ public class PointArray {
 	 */
 	public final void addPoint(final double _x, final double _y) {
 		if (this.size < pointArray.length - 1) {
-			//pointArray[this.size] = new Point(_x, _y);
+			// pointArray[this.size] = new Point(_x, _y);
 			pointArray[this.size].x = _x;
 			pointArray[this.size].y = _y;
 			this.size++;
 			this.cursor++;
 		} else if (this.size == pointArray.length - 1) {
-			//pointArray[this.cursor] = new Point(_x, _y);
+			// pointArray[this.cursor] = new Point(_x, _y);
 			pointArray[this.cursor].x = _x;
 			pointArray[this.cursor].y = _y;
 			if (this.cursor < pointArray.length - 1) {
@@ -185,8 +186,10 @@ public class PointArray {
 
 	/**
 	 * 
-	 * @param deltaX delta x
-	 * @param deltaY delta y
+	 * @param deltaX
+	 *            delta x
+	 * @param deltaY
+	 *            delta y
 	 */
 	public final void moveAll(final double deltaX, final double deltaY) {
 		for (int i = 0; i < this.size; i++) {
@@ -197,8 +200,10 @@ public class PointArray {
 
 	/**
 	 * 
-	 * @param i index
-	 * @param _x x
+	 * @param i
+	 *            index
+	 * @param _x
+	 *            x
 	 */
 	private void set_x(final int i, final double _x) {
 		pointArray[i].x = _x;

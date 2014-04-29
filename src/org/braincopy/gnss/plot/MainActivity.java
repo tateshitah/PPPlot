@@ -26,13 +26,6 @@ package org.braincopy.gnss.plot;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.NetworkOnMainThreadException;
-import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -40,6 +33,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.NetworkOnMainThreadException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,7 +60,7 @@ import android.widget.TextView;
  * Main Activity class of this android application PPPlot.
  * 
  * @author Hiroaki Tateshita
- * @version 0.80
+ * @version 0.90
  * 
  */
 public class MainActivity extends Activity {
@@ -162,10 +162,9 @@ public class MainActivity extends Activity {
 	 * 
 	 */
 	public static final int CONNECTION_2 = 2;
-	
+
 	/**
-	 * true: both (1) and (2) are running
-	 * false: either (1) and (2) are running
+	 * true: both (1) and (2) are running false: either (1) and (2) are running
 	 */
 	private boolean isMultiThread = false;
 
@@ -186,6 +185,7 @@ public class MainActivity extends Activity {
 		menuConnect = menu.findItem(R.id.menu_connect_item);
 		menuDisconnect = menu.findItem(R.id.menu_disconnect_item);
 		statusTextView = (TextView) findViewById(R.id.status_textView);
+		statusTextView.append("\n");
 		return true;
 	}
 
@@ -205,9 +205,9 @@ public class MainActivity extends Activity {
 		streamType2 = sharedPref.getInt("stream type2", -1);
 		switch (item.getItemId()) {
 		case R.id.menu_connect_item:
-			if(streamType1 != -1 && streamType2 != -1){
+			if (streamType1 != -1 && streamType2 != -1) {
 				this.isMultiThread = true;
-			}else{
+			} else {
 				this.isMultiThread = false;
 			}
 			if (streamType1 != -1) {
@@ -621,7 +621,9 @@ public class MainActivity extends Activity {
 
 	/**
 	 * start the plotting by using embedded GPS sensor.
-	 * @param connectNumber connection Number (1) or (2) 
+	 * 
+	 * @param connectNumber
+	 *            connection Number (1) or (2)
 	 */
 	private void startGPS(final int connectNumber) {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -636,7 +638,7 @@ public class MainActivity extends Activity {
 
 					@Override
 					public void run() {
-						plotview.setPoint(message,connectNumber,isMultiThread);
+						plotview.setPoint(message, connectNumber, isMultiThread);
 						plotview.plot();
 						// statusTextView.append(message + "\n");
 						scrollview.scrollTo(0, statusTextView.getBottom());
@@ -669,7 +671,8 @@ public class MainActivity extends Activity {
 	 *             thread
 	 */
 	protected final void connect(final String hostname, final int portNumber,
-			final int connectionNumber) throws IOException, InterruptedException {
+			final int connectionNumber) throws IOException,
+			InterruptedException {
 		statusTextView.append("connecting... -> ip: " + hostname + ", port: "
 				+ portNumber + "\n");
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -689,7 +692,8 @@ public class MainActivity extends Activity {
 
 						@Override
 						public void run() {
-							plotview.setPoint(message, connectionNumber,isMultiThread);
+							plotview.setPoint(message, connectionNumber,
+									isMultiThread);
 							plotview.plot();
 							// statusTextView.append(message + "\n");
 							scrollview.scrollTo(0, statusTextView.getBottom());

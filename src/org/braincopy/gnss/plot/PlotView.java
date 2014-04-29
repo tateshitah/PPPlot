@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2013 braincopy.org
+Copyright (c) 2013-2014 Hiroaki Tateshita
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ import android.view.SurfaceView;
  * PlotView is custom SurfaceView for plotting animation.
  * 
  * @author Hiroaki Tateshita
- * @version 0.80
+ * @version 0.90
  * 
  */
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
@@ -106,6 +106,16 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
 	/**
 	 * 
+	 */
+	private Paint paint;
+
+	/**
+	 * 
+	 */
+	private Rect whiteRect;
+
+	/**
+	 * 
 	 * @param context
 	 *            context
 	 */
@@ -170,10 +180,15 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	private void fillWhite(final Canvas canvas) {
 		int nViewWidth = getWidth();
 		int nViewHeight = getHeight();
-		Paint paint = new Paint();
+		if (paint == null) {
+			paint = new Paint();
+		}
+		if (whiteRect == null) {
+			whiteRect = new Rect(0, 0, nViewWidth, nViewHeight);
+		}
 		paint.setColor(Color.WHITE);
 		paint.setStyle(Paint.Style.FILL);
-		canvas.drawRect(new Rect(0, 0, nViewWidth, nViewHeight), paint);
+		canvas.drawRect(whiteRect, paint);
 	}
 
 	/**
@@ -194,7 +209,9 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 					 * pointArray.addPoint(x_center + i, y_center - 2 * i); }
 					 */
 
-					Paint paint = new Paint();
+					if (paint == null) {
+						paint = new Paint();
+					}
 					paint.setColor(Color.BLUE);
 
 					// draw points
@@ -323,7 +340,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	 *            it should be NMEA and include RMC
 	 * @param connectNumber
 	 *            (1) or (2)
-	 *            @param isMultiThread 
+	 * @param isMultiThread
 	 */
 	public final synchronized void setPoint(final String message,
 			int connectNumber, boolean isMultiThread) {
@@ -331,19 +348,19 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 			String[] rmcMessages = message.split(",");
 			if (rmcMessages[2].equals("A")) {
 				int indexOfPeriod = rmcMessages[3].indexOf(".");
-				Double latDeg = Double.parseDouble(rmcMessages[3].substring(0,
+				double latDeg = Double.parseDouble(rmcMessages[3].substring(0,
 						indexOfPeriod - 2));
-				Double latMin = Double.parseDouble(rmcMessages[3]
+				double latMin = Double.parseDouble(rmcMessages[3]
 						.substring(indexOfPeriod - 2));
-				Double lat = latDeg + latMin / 60.0;
+				double lat = latDeg + latMin / 60.0;
 				if (rmcMessages[4].equals("S")) {
 					lat = lat * -1;
 				}
-				Double lonDeg = Double.parseDouble(rmcMessages[5].substring(0,
+				double lonDeg = Double.parseDouble(rmcMessages[5].substring(0,
 						indexOfPeriod - 2));
-				Double lonMin = Double.parseDouble(rmcMessages[5]
+				double lonMin = Double.parseDouble(rmcMessages[5]
 						.substring(indexOfPeriod - 2));
-				Double lon = lonDeg + lonMin / 60.0;
+				double lon = lonDeg + lonMin / 60.0;
 				if (rmcMessages[6].equals("E")) {
 					lon = lon * -1;
 				}
@@ -359,39 +376,41 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 						/ 360.0 * unitDP;
 
 				if (fixTrackCenter) {
-					//case multi and con 1
+					// case multi and con 1
 					// pa
-					if(isMultiThread && connectNumber==MainActivity.CONNECTION_1){
-						pointArray1.moveAll(-1*deltaX, -1*deltaY);
-						pointArray2.moveAll(-1*deltaX, -1*deltaY);
+					if (isMultiThread
+							&& connectNumber == MainActivity.CONNECTION_1) {
+						pointArray1.moveAll(-1 * deltaX, -1 * deltaY);
+						pointArray2.moveAll(-1 * deltaX, -1 * deltaY);
 						pointArray1.addPoint(xCenter, yCenter);
 						lonCenter = lon;
 						latCenter = lat;
-					}else if (isMultiThread && connectNumber == MainActivity.CONNECTION_2){
+					} else if (isMultiThread
+							&& connectNumber == MainActivity.CONNECTION_2) {
 						pointArray2
-						.addPoint(xCenter + deltaX, yCenter + deltaY);						
-					}else if (!isMultiThread && connectNumber==MainActivity.CONNECTION_1){
-						pointArray1.moveAll(-1*deltaX, -1*deltaY);
-						pointArray1.addPoint(xCenter, yCenter);
-						lonCenter = lon;
-						latCenter = lat;						
-					}else if (!isMultiThread&&connectNumber==MainActivity.CONNECTION_2){
-						pointArray2.moveAll(-1*deltaX, -1*deltaY);
-						pointArray2.addPoint(xCenter, yCenter);
-						lonCenter = lon;
-						latCenter = lat;						
-					}
-					/*
-					if (connectNumber == MainActivity.CONNECTION_1) {
+								.addPoint(xCenter + deltaX, yCenter + deltaY);
+					} else if (!isMultiThread
+							&& connectNumber == MainActivity.CONNECTION_1) {
 						pointArray1.moveAll(-1 * deltaX, -1 * deltaY);
 						pointArray1.addPoint(xCenter, yCenter);
-					} else if (connectNumber == MainActivity.CONNECTION_2) {
+						lonCenter = lon;
+						latCenter = lat;
+					} else if (!isMultiThread
+							&& connectNumber == MainActivity.CONNECTION_2) {
 						pointArray2.moveAll(-1 * deltaX, -1 * deltaY);
 						pointArray2.addPoint(xCenter, yCenter);
+						lonCenter = lon;
+						latCenter = lat;
 					}
-					lonCenter = lon;
-					latCenter = lat;
-					*/
+					/*
+					 * if (connectNumber == MainActivity.CONNECTION_1) {
+					 * pointArray1.moveAll(-1 * deltaX, -1 * deltaY);
+					 * pointArray1.addPoint(xCenter, yCenter); } else if
+					 * (connectNumber == MainActivity.CONNECTION_2) {
+					 * pointArray2.moveAll(-1 * deltaX, -1 * deltaY);
+					 * pointArray2.addPoint(xCenter, yCenter); } lonCenter =
+					 * lon; latCenter = lat;
+					 */
 				} else {
 					if (connectNumber == MainActivity.CONNECTION_1) {
 						pointArray1
@@ -417,17 +436,12 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public final void surfaceCreated(final SurfaceHolder arg0) {
 		// matrix = new Matrix();
+		// Log.i("surveyMEM",
+		// "if this part is called many time, it is strange.");
 		drawPlotArea();
 		final int maxPointNumber = 1000;
 		pointArray1 = new PointArray(maxPointNumber);
 		pointArray2 = new PointArray(maxPointNumber);
-		// for test
-		/*
-		 * for (int i = 0; i < 100; i++) { pointArray.addPoint( x_center + 100 *
-		 * Math.sin(i * 2 * Math.PI / 50.0), y_center + 100 * Math.cos(i *
-		 * Math.PI / 50.0)); }
-		 */
-		// plot();
 	}
 
 	@Override

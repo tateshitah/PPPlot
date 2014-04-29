@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2013 braincopy.org
+Copyright (c) 2013-2014 Hiroaki Tateshita
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal
@@ -34,32 +34,33 @@ import java.net.UnknownHostException;
 import android.util.Log;
 
 /**
+ * This thread is waiting for NMEA message via TCP connection.
  * 
  * @author Hiroaki Tateshita
- * @version 0.42
- *
+ * @version 0.5
+ * 
  */
 public class TCPClientThread extends Thread {
 	/**
 	 * 
 	 */
 	private boolean isRunning = false;
-	
+
 	/**
 	 * 
 	 */
 	private String hostname;
-	
+
 	/**
 	 * 
 	 */
 	private int portNumber;
-	
+
 	/**
 	 * 
 	 */
 	private Socket socket;
-	
+
 	/**
 	 * 
 	 */
@@ -74,9 +75,9 @@ public class TCPClientThread extends Thread {
 			socket = new Socket(address, portNumber);
 			isRunning = true;
 			String tempstr = "";
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
 			while (isRunning) {
-				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(socket.getInputStream()));
 				tempstr = bufferedReader.readLine();
 				if (this.messageListener != null && tempstr != null) {
 					this.messageListener.sendMessage(tempstr);
@@ -108,7 +109,8 @@ public class TCPClientThread extends Thread {
 
 	/**
 	 * 
-	 * @param hn hostname
+	 * @param hn
+	 *            hostname
 	 */
 	public final void setHostName(final String hn) {
 		this.hostname = hn;
@@ -117,16 +119,18 @@ public class TCPClientThread extends Thread {
 
 	/**
 	 * 
-	 * @param portNumber0 port Number
+	 * @param portNumber0
+	 *            port Number
 	 */
 	public final void setPortNumber(final int portNumber0) {
 		this.portNumber = portNumber0;
 
 	}
-	
+
 	/**
 	 * 
-	 * @param ml MessageLister
+	 * @param ml
+	 *            MessageLister
 	 */
 	public final void setMessageListener(final MessageListener ml) {
 		this.messageListener = ml;
