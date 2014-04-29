@@ -30,7 +30,7 @@ import android.util.Log;
  * Que of points.
  * 
  * @author Hiroaki Tateshita
- * @version 0.5
+ * @version 0.6
  * 
  */
 public class PointArray {
