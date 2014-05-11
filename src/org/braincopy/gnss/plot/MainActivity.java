@@ -523,7 +523,7 @@ public class MainActivity extends Activity {
 		final SharedPreferences.Editor editor = sharedPref.edit();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		LayoutInflater inflater = LayoutInflater.from(this);
-		View dialogView = inflater.inflate(R.layout.dialog_connection_setting3,
+		View dialogView = inflater.inflate(R.layout.dialog_tcp_connection_setting,
 				null);
 		builder.setView(dialogView);
 		final EditText ipEditText = (EditText) dialogView
