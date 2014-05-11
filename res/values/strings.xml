@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_connect_name">Connect</string>
-    <string name="menu_connectionSetting_name">Connection Setting...</string>
+    <string name="menu_connectionSetting_name">Connection Setting</string>
     <string name="dialog_connectionSetting_message">Connection Setting</string>
     <string name="menu_disconnect_name">Disconnect</string>
     <string name="dialog_ip_setting_hint">TCP Server IP address or host name</string>
@@ -24,7 +24,7 @@
     <string-array name="stream_type">
         <item >TCPClient</item>
         <item >Embeded GPS</item>
-        <item >--</item>
+        <item >--------</item>
     </string-array>
         <string name="dialog_stream_type_label">Stream Type</string>
         <string name="dialog_option_label">Opt</string>

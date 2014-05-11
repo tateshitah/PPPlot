@@ -1,6 +1,6 @@
 /*
  
-Copyright (c) 2013 braincopy.org
+Copyright (c) 2013-2014 Hiroaki Tateshita
 
 Permission is hereby granted, free of charge, to any person obtaining a copy 
 of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,13 @@ package org.braincopy.gnss.plot;
 /**
  * 
  * @author Hiroaki Tateshita
- * @version 0.4
+ * @version 0.5
  */
 public interface MessageListener {
 	/**
 	 * 
-	 * @param message NMEA
+	 * @param message
+	 *            NMEA
 	 */
 	void sendMessage(String message);
 }
