@@ -1,0 +1,47 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_connect_item"
+        android:title="@string/menu_connect_name">
+    </item>
+    <item
+        android:id="@+id/menu_disconnect_item"
+        android:enabled="false"
+        android:title="@string/menu_disconnect_name">
+    </item>
+    <item
+        android:id="@+id/menu_connectionSetting_item"
+        android:title="@string/menu_connectionSetting_name">
+    </item>
+    <item
+        android:id="@+id/menu_clear_item"
+        android:title="@string/menu_clear_name">
+    </item>
+
+    <group
+        android:id="@+id/group_checkable_menu"
+        android:checkableBehavior="all" >
+        <item
+            android:id="@+id/menu_fix_track_center_item"
+            android:title="@string/menu_fix_track_center_name">
+        </item>
+    </group>
+
+    <item
+        android:id="@+id/menu_exit_item"
+        android:title="@string/menu_exit_name">
+    </item>
+    <item
+        android:id="@+id/menu_zoom_up_item"
+        android:icon="@drawable/ic_menu_zoom_up"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_zoom_up_name">
+    </item>
+    <item
+        android:id="@+id/menu_zoom_down_item"
+        android:icon="@drawable/ic_menu_zoom_down"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_zoom_down_name">
+    </item>
+
+</menu>
